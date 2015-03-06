@@ -28,11 +28,11 @@ class Society{
 		void Add_Person(Person& person){
 			_Peaple->push_back(person);
 		}
-		list<Person> Get_Peaple(){
+		list<Person> Get_People(){
 			return _Peaple;
 		}
 	private:
-		list<Person>* _Peaple = new list<Person>();
+		list<Person>* _People = new list<Person>();
 		string _title;
 };
 
@@ -44,6 +44,8 @@ ostream& operator<<(ostream& os, Society& s){
 
 
 int main(){
+	Vector<Person> vp= new Vector<Person>();
+	
 	Person p(22, "hamid");
 	cout << p;
 }
