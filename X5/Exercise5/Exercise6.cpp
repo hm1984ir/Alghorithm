@@ -28,6 +28,9 @@ class Society{
 		void Add_Person(Person& person){
 			_Peaple->push_back(person);
 		}
+		list<Person> Get_Peaple(){
+			return _Peaple;
+		}
 	private:
 		list<Person>* _Peaple = new list<Person>();
 		string _title;
