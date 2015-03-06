@@ -29,7 +29,7 @@ class Society{
 			_Peaple->push_back(person);
 		}
 		list<Person> Get_People(){
-			return _Peaple;
+			return _People;
 		}
 	private:
 		list<Person>* _People = new list<Person>();
