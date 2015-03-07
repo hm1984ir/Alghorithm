@@ -28,8 +28,11 @@ class Society{
 		void Add_Person(const Person& person){
 			_People.push_back(person);
 		}
-		list<Person> Get_People(){
+		list<Person> Get_People() const{
 			return _People;
+		}
+		string Get_Title() const{
+			return _title;
 		}
 		
 	private:
@@ -37,14 +40,22 @@ class Society{
 		string _title;
 };
 
-ostream& operator<<(ostream& os, Society& s){
+ostream& operator<<(const ostream& os,const Society& s){
+	cout << s.Get_Title();
 	for(const Person& p:s.Get_People()){
-		cout << p << "/n";
+		cout << p << "\n";
 	}
 }
 
 
 int main(){
+	Society s("iran");
 	Person p(22, "hamid");
-	cout << p;
+	Person n(20, "Nastaran");
+	Person v(21, "Photo");
+	s.Add_Person(p);
+	s.Add_Person(n);
+	s.Add_Person(v);
+	
+	cout << s;
 }
