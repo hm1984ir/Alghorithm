@@ -97,8 +97,7 @@ void fill(std::vector<Chrono::Date>& aa){
 
 int main(){
     using namespace Chrono;
-    std::string str;
-    std::cin >> str;
+
 
     Date d {16,Season::spring,1394};
 
