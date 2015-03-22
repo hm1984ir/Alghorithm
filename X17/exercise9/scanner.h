@@ -6,7 +6,8 @@ namespace hm_mini_compiler{
     struct Token{
             std::string value;
             Token_Type type;
-            Token(std::string v, Token_Type t) : value{v}, type{t}{}
+            Token(const std::string& v, Token_Type t) : value{v}, type{t}{}
+            //Token(std::string&& v, Token_Type t) : value {v},type{t}{}
         };
     class Scanner{
     public:
@@ -24,6 +25,18 @@ namespace hm_mini_compiler{
         int _text_len;
 
     };
+
+    bool try_cast_to_operation(char c){
+        switch(c){
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+            return true;
+        }
+
+        return false;
+    }
 
     bool try_cast_to_number(char c){
         switch(c){
@@ -51,24 +64,25 @@ namespace hm_mini_compiler{
         std::string token_str;
         if(try_scan_number(token_str)){
             return Token(token_str, Token_Type::number);
-        } //else if(try_scan_operation(token_str){
-            //return Token(token_str, Token_Type::operation);
-        //}
+        } else if(try_scan_operation(token_str)){
+            return Token(token_str, Token_Type::operation);
+        }
+
+        return Token("$",{});
     }
 
     bool Scanner::try_scan_number(std::string& num) {
         int scanner_cursor = _cursor;
 
         while(scanner_cursor < _text_len){
-            if(try_cast_to_number(_text[_cursor])){
+            if(try_cast_to_number(_text[scanner_cursor])){
                 scanner_cursor++;
             } else{
-                scanner_cursor--;
                 break;
             }
         }
 
-        if(_cursor > scanner_cursor){
+        if(_cursor == scanner_cursor){
             return false;
         }
 
@@ -78,4 +92,14 @@ namespace hm_mini_compiler{
         return true;
     }
 
+    bool Scanner::try_scan_operation(std::string& str){
+
+        if(try_cast_to_operation(_text[_cursor])){
+            str = _text[_cursor];
+            _cursor++;
+            return true;
+        }
+
+        return false;
+    }
 }
