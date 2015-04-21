@@ -9,12 +9,8 @@ using namespace std;
 
 enum class color_type {white, gray, black};
 
-int bfs(int root, vector<vector<bool>> adjacencyList){
-    vector<color_type> colors;
-
-    for(auto row : adjacencyList){
-        colors.push_back(color_type::white);
-    }
+int bfs(const int root, const vector<vector<bool>> adjacency_matrix){
+    vector<color_type> colors(adjacency_matrix.size(), color_type::white);
 
     queue<int> q;
     q.push(root);
@@ -25,8 +21,8 @@ int bfs(int root, vector<vector<bool>> adjacencyList){
         int current_node = q.front();
         q.pop();
         colors[current_node] = color_type::gray;
-        for(int index = 0; index < adjacencyList[current_node].size();index++){
-            if(adjacencyList[current_node][index] && colors[index] == color_type::white){
+        for(int index = 0; index < adjacency_matrix[current_node].size();index++){
+            if(adjacency_matrix[current_node][index] && colors[index] == color_type::white){
                 q.push(index);
             }
         }
