@@ -9,10 +9,10 @@ using namespace std;
 
 enum class color_type {white, gray, black};
 
-int bfs(int root, vector<vector<bool>> adjacyList){
+int bfs(int root, vector<vector<bool>> adjacencyList){
     vector<color_type> colors;
 
-    for(auto row : adjacyList){
+    for(auto row : adjacencyList){
         colors.push_back(color_type::white);
     }
 
@@ -25,8 +25,8 @@ int bfs(int root, vector<vector<bool>> adjacyList){
         int current_node = q.front();
         q.pop();
         colors[current_node] = color_type::gray;
-        for(int index = 0; index < adjacyList[current_node].size();index++){
-            if(adjacyList[current_node][index] && colors[index] == color_type::white){
+        for(int index = 0; index < adjacencyList[current_node].size();index++){
+            if(adjacencyList[current_node][index] && colors[index] == color_type::white){
                 q.push(index);
             }
         }
@@ -39,30 +39,11 @@ int bfs(int root, vector<vector<bool>> adjacyList){
 }
 
 int main(){
-    vector<vector<bool>> lst{};
+    vector<vector<bool>> lst{{false, true, false},
+			     {false, false, true},
+			     {false, false, false}};
 
-    vector<bool> temp;
-    temp.push_back(false);
-    temp.push_back(true);
-    temp.push_back(false);
-
-    lst.push_back(temp);
-
-    vector<bool> temp1;
-    temp1.push_back(false);
-    temp1.push_back(false);
-    temp1.push_back(true);
-
-    lst.push_back(temp1);
-
-    vector<bool> temp2;
-    temp2.push_back(false);
-    temp2.push_back(false);
-    temp2.push_back(false);
-
-    lst.push_back(temp2);
-
-
+   
     int max_dependency = 0;
     int max_index = -1;
 
@@ -75,6 +56,7 @@ int main(){
     }
 
     cout << "max_index : " << max_index <<"  max_dependency : " << max_dependency;
+    return 0;
 
 }
 
