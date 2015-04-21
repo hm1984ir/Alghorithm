@@ -1,23 +1,4 @@
-/*
-BFS(G,s)
-for each vertex u in G.V - {s}
-        u.color = white
-        u.d = fin
-        u.p= nil
-s.color = gray
-s.d = 0
-Q = 0
-Enqueue(Q, s)
-while Q != 0
-    u = Dequeue(Q)
-    for each v in G.Adj[u]
-        if(v.color == white)
-            v.color = gray
-            v.d = u.d +1
-            v.p = u
-            Enqueue(Q, v)
-    u.color = black
-*/
+
 #import<random>
 #import<vector>
 #import<list>
