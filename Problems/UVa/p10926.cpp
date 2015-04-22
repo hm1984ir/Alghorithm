@@ -1,7 +1,5 @@
 
-#import<random>
 #import<vector>
-#import<list>
 #import<queue>
 #import<iostream>
 
@@ -36,7 +34,7 @@ int bfs(const int root, const vector<vector<bool>> adjacency_matrix){
     return child_count;
 }
 
-void calculateTheMostDependentTask(vector<vector<bool>> lst){
+int calculateTheMostDependentTask(vector<vector<bool>> lst){
     int max_dependency = 0;
     int max_index = -1;
 
@@ -48,12 +46,13 @@ void calculateTheMostDependentTask(vector<vector<bool>> lst){
         }
     }
 
-    cout << max_index +1
-     <<"\n" << max_dependency << "\n";
+    return max_index +1;
+     //<<"\n" << max_dependency << "\n";
 }
 
 int main(){
     int task_count;
+    vector<int> result;
 
     while(cin >> task_count){
         if(task_count == 0) break;
@@ -69,9 +68,12 @@ int main(){
             }
         }
 
-        calculateTheMostDependentTask(senario);
+        result.push_back(calculateTheMostDependentTask(senario));
     }
 
+    for(auto item : result){
+        cout << item << "\n";
+    }
 
 
 
