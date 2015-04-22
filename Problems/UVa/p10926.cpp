@@ -31,41 +31,50 @@ int bfs(const int root, const vector<vector<bool>> adjacency_matrix){
     }
 
     return child_count;
-
 }
 
-int main(){
-    vector<vector<vector<bool>>> lst;
-    char c;
-    int task_count;
-    vector<vector<bool>> senario;
-    while(cin >> task_count){
-        do{
-            vector<bool> task(task_count,false);
-            for(int i=0; i<task_count; i++){
-                int index;
-                cin >> index;
-                task[index] = true;
-            }
-            senario.push_back(task);
-            cin >> c;
-            } while(c == '\n');
-        lst.push_back(senario);
-    }
-
+void calculateTheMostDependentTask(vector<vector<bool>> lst){
     int max_dependency = 0;
     int max_index = -1;
-    for(auto item : lst){
-        for(int i = 0; i<item.size(); i++){
-            int dependency = bfs(i,item);
-            if(dependency > max_dependency){
-                max_index = i;
-                max_dependency = dependency;
-            }
+
+    for(int i = 0; i<lst.size(); i++){
+        int dependency = bfs(i,lst);
+        if(dependency > max_dependency){
+            max_index = i;
+            max_dependency = dependency;
         }
     }
 
-    cout << "max_index : " << max_index <<"  max_dependency : " << max_dependency;
+    cout << "\n";
+    cout << max_index + 1 <<"\n" << max_dependency;
+}
+
+int main(){
+    int task_count;
+
+
+    int k = 0;
+    while(cin >> task_count){
+        if(task_count == 0) break;
+        vector<vector<bool>> senario(task_count,vector<bool>(task_count,false));
+
+        for(int i = 0;i < task_count; i++){
+            int index;
+
+            while(cin >> index){
+                if(index == 0) break;
+                senario[i][index-1] = true;
+            }
+
+            if(index == 0) break;
+        }
+
+        calculateTheMostDependentTask(senario);
+    }
+
+
+
+
     return 0;
 
 }
