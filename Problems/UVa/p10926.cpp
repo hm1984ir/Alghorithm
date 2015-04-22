@@ -14,20 +14,23 @@ int bfs(const int root, const vector<vector<bool>> adjacency_matrix){
 
     queue<int> q;
     q.push(root);
-    colors[root] = color_type::gray;
+
 
     int child_count = -1;
     while(!q.empty()){
         int current_node = q.front();
         q.pop();
-        colors[current_node] = color_type::gray;
-        for(int index = 0; index < adjacency_matrix[current_node].size();index++){
-            if(adjacency_matrix[current_node][index] && colors[index] == color_type::white){
-                q.push(index);
-            }
-        }
+        if(colors[current_node] != color_type::gray){
 
-        child_count ++;
+            colors[current_node] = color_type::gray;
+            for(int index = 0; index < adjacency_matrix[current_node].size();index++){
+                if(adjacency_matrix[current_node][index] && colors[index] == color_type::white){
+                    q.push(index);
+                }
+            }
+
+            child_count ++;
+        }
     }
 
     return child_count;
@@ -46,14 +49,13 @@ void calculateTheMostDependentTask(vector<vector<bool>> lst){
     }
 
     cout << "\n";
-    cout << max_index + 1 <<"\n" << max_dependency;
+    cout << max_index +1
+     <<"\n" << max_dependency << "\n";
 }
 
 int main(){
     int task_count;
 
-
-    int k = 0;
     while(cin >> task_count){
         if(task_count == 0) break;
         vector<vector<bool>> senario(task_count,vector<bool>(task_count,false));
@@ -61,12 +63,16 @@ int main(){
         for(int i = 0;i < task_count; i++){
             int index;
 
-            while(cin >> index){
+            for(int j = 0; j < task_count-1;j++){
+                cin >> index;
                 if(index == 0) break;
                 senario[i][index-1] = true;
             }
+        }
 
-            if(index == 0) break;
+        for(auto item : senario)
+        for(auto itemm : item){
+            cout << itemm;
         }
 
         calculateTheMostDependentTask(senario);
