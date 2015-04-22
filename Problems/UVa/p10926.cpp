@@ -48,7 +48,6 @@ void calculateTheMostDependentTask(vector<vector<bool>> lst){
         }
     }
 
-    cout << "\n";
     cout << max_index +1
      <<"\n" << max_dependency << "\n";
 }
@@ -68,11 +67,6 @@ int main(){
                 if(index == 0) break;
                 senario[i][index-1] = true;
             }
-        }
-
-        for(auto item : senario)
-        for(auto itemm : item){
-            cout << itemm;
         }
 
         calculateTheMostDependentTask(senario);
