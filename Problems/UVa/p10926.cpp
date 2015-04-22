@@ -35,19 +35,33 @@ int bfs(const int root, const vector<vector<bool>> adjacency_matrix){
 }
 
 int main(){
-    vector<vector<bool>> lst{{false, true, false},
-			     {false, false, true},
-			     {false, false, false}};
+    vector<vector<vector<bool>>> lst;
+    char c;
+    int task_count;
+    vector<vector<bool>> senario;
+    while(cin >> task_count){
+        do{
+            vector<bool> task(task_count,false);
+            for(int i=0; i<task_count; i++){
+                int index;
+                cin >> index;
+                task[index] = true;
+            }
+            senario.push_back(task);
+            cin >> c;
+            } while(c == '\n');
+        lst.push_back(senario);
+    }
 
-   
     int max_dependency = 0;
     int max_index = -1;
-
-    for(int i = 0; i<lst.size(); i++){
-        int dependency = bfs(i,lst);
-        if(dependency > max_dependency){
-            max_index = i;
-            max_dependency = dependency;
+    for(auto item : lst){
+        for(int i = 0; i<item.size(); i++){
+            int dependency = bfs(i,item);
+            if(dependency > max_dependency){
+                max_index = i;
+                max_dependency = dependency;
+            }
         }
     }
 
