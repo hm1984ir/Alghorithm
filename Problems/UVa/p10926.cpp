@@ -52,31 +52,27 @@ int calculateTheMostDependentTask(vector<vector<bool>> lst){
 
 int main(){
     int task_count;
-    vector<int> result;
-
+       
     while(cin >> task_count){
         if(task_count == 0) break;
+	
         vector<vector<bool>> senario(task_count,vector<bool>(task_count,false));
 
         for(int i = 0;i < task_count; i++){
-            int index;
-
-            for(int j = 0; j < task_count-1;j++){
-                cin >> index;
-                if(index == 0) break;
+            int num_direct_dependency;
+	    cin >> num_direct_dependency;
+	    
+            for(int j = 0; j < num_direct_dependency;j++){
+                int index;
+		cin >> index;
                 senario[i][index-1] = true;
             }
         }
 
-        result.push_back(calculateTheMostDependentTask(senario));
+	cout << calculateTheMostDependentTask(senario)<<endl;
     }
 
-    for(auto item : result){
-        cout << item << "\n";
-    }
-
-
-
+    
     return 0;
 
 }
