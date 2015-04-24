@@ -6,15 +6,18 @@ using namespace std;
 
 int main()
 {
-    nik::NasiString nastaran{"She's falling in love"};
+    nik::NasiString nastaran{"She's"};
+
+    cout << "Nasi String init Size is :" << nastaran.get_size() << "\n";
+
+    nastaran = nastaran + " falling";
+    nastaran = nastaran + " in love with";
+    nastaran = nastaran + " Hamid :D";
+
+
+    cout << nastaran.c_str() << "\n";
 
     cout << "Nasi String Size is :" << nastaran.get_size() << "\n";
-
-    nastaran = nastaran + " with Hamid";
-
-    for(int i=0; i<nastaran.get_size();i++){
-            cout << nastaran[i] << "\n";
-    }
 
     return 0;
 }
