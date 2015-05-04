@@ -4,15 +4,17 @@
 #import<vector>
 #import<map>
 #import<queue>
+#import<algorithm>
+#import<set>
 
 using namespace std;
 
 enum class color_type{white,gray};
 
-vector<int> bfs(vector<vector<bool>> lst_graph,int root){
+set<int> bfs(vector<vector<bool>> lst_graph,int root){
     int count_of_nodes = lst_graph.size();
     vector<color_type> lst_visit(count_of_nodes,{color_type::white});
-    vector<int> lst_visited;
+    set<int> set_not_visited;
 
     queue<int> q;
     q.push(root);
@@ -28,21 +30,27 @@ vector<int> bfs(vector<vector<bool>> lst_graph,int root){
         }
 
         lst_visit[current_node] = color_type::gray;
-        lst_visited.push_back(current_node);
     }
 
-    return lst_visited;
-}
-
-void two_combination_of(vector<int> lst,array<int,2> p,int index, vector<array<int,2>> result){
-    for(auto i :lst){
-        p[index] =i;
-        if(index == 1){
-            result.push_back(p);
-        } else {
-            two_combination_of(lst,p,1,result);
+    for(int i{0}; i< count_of_nodes; i++){
+        if(lst_visit[i] == color_type::white){
+            set_not_visited.insert(i);
         }
     }
+
+    return set_not_visited;
+}
+
+vector<vector<bool>> transpose_graph(const vector<vector<bool>> graph){
+    vector<vector<bool>> transpose_graph(graph.size(),vector<bool>(graph.size()));
+
+    for(int i=0; i< graph.size();i++){
+        for(int j=0; j<graph.size(); j++){
+            transpose_graph[j][i] = graph[i][j];
+        }
+    }
+
+    return transpose_graph;
 }
 
 
@@ -76,7 +84,7 @@ vector<vector<bool>> make_graph(int count_of_node,vector<vector<string>> computa
 int main(){
     int nc;
 
-    vector<pair<int,vector<pair<string,string>>>> result;
+    vector<pair<int,vector<array<string,2>>>> result;
 
     while(cin >> nc){
         if(nc == 0) break;
@@ -113,54 +121,46 @@ int main(){
 
         vector<vector<bool>> graph = make_graph(count_of_node,computations,inter_computation_relation, names);
 
-        for(auto row : graph){
-            for(auto cell : row){
-                cout << cell;
-            }
-            cout << "\n";
-        }
+        vector<array<string,2>> all_concurrent_events;
 
-        vector<vector<int>> concurrent_groups;
+        int count_of_concurrent_events{};
 
         for(int i=0;i<graph.size();i++){
-            vector<int> lst_not_visited = bfs(graph,i);
-            lst_not_visited.push_back(i);
-            concurrent_groups.push_back(lst_not_visited);
+            vector<int> lst_concurrent{};
+            set<int> set_not_visited = bfs(graph,i);
+            vector<vector<bool>>  t_graph = transpose_graph(graph);
+            set<int> set_transpose_not_visited = bfs(t_graph,i);
+
+            set_intersection(set_not_visited.begin(),set_not_visited.end(),set_transpose_not_visited.begin(),set_transpose_not_visited.end(),  std::back_inserter(lst_concurrent));
+
+            for(auto c : lst_concurrent){
+                all_concurrent_events.push_back(array<string,2>({lst_name[i],lst_name[c]}));
+                count_of_concurrent_events++;
+            }
         }
 
-        vector<array<int,2>> all_concurrent_events;
-        for(auto group : concurrent_groups){
-            two_combination_of(group,array<int,2>{},0,all_concurrent_events);
-        }
+        count_of_concurrent_events = count_of_concurrent_events/2;
 
-        int count_of_concurrent = all_concurrent_events.size();
-
-        vector<pair<string, string>> temp;
-        for(array<int,2> c : all_concurrent_events){
-            temp.push_back(pair<string,string>({lst_name[c[0]], lst_name[c[1]]}));
-        }
-
-        result.push_back(pair<int,vector<pair<string,string>>>(count_of_concurrent,temp));
+        result.push_back(pair<int,vector<array<string,2>>>({count_of_concurrent_events,all_concurrent_events}));
     }
 
     int i{1};
     for(auto item : result){
-        cout << "Case " << i << "," << get<0>(item) <<" concurrent events:" << "\n";
-        if(get<1>(item).size()>0){
-            for(auto concurrent_events : get<1>(item)){
-                cout << "(" << get<0>(concurrent_events) << "," << get<1>(concurrent_events) << ") ";
-            }
+        if(item.first >= 2){
+                cout << "Case " << i << ", " << item.first <<" concurrent events:" << "\n";
+                cout << "(" << item.second[0][0] << "," << item.second[0][1] << ") ";
+                cout << "(" << item.second[1][0] << "," << item.second[1][1] << ") ";
+        }else if(item.first == 1){
+            cout << "Case " << i << ", " << item.first <<" concurrent events:" << "\n";
+            cout << "(" << item.second[0][0] << "," << item.second[0][1] << ") ";
         }else {
-            cout << "0";
+            cout << "Case " << i << "," << " no concurrent events.";
         }
 
         cout << "\n";
         i++;
-
     }
 
      return 0;
-
-
 }
 
