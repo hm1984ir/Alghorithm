@@ -1,6 +1,4 @@
 
-#include "stdafx.h"
-
 #include <iostream>
 #include <unordered_set>
 #include <vector>
@@ -13,7 +11,7 @@ using namespace std;
 void FindAllTableWords(const unordered_set<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table, int x, int y, string letter);
 
 int main() {
-	//ifstream fin("d:\data.in", ios::in);
+	ifstream fin("data.in", ios::in);
 
 	unordered_set<string> dic;
 	vector<char> words(16);
@@ -24,14 +22,14 @@ int main() {
 
 	int number_of_read;
 	cout << "Please enter the number of dictionary items : ";
-	cin >> number_of_read;
+	fin >> number_of_read;
 
 	while (number_of_read--)
 	{
 		cout << number_of_read;
 
 		cout << "input dic-item : ";
-		cin >> letter;
+		fin >> letter;
 		dic.insert(letter);
 	}
 
@@ -43,7 +41,7 @@ int main() {
 	while (number_of_read--)
 	{
 		cout << "input word(" << (15 - number_of_read) / 4 << "," << (15 - number_of_read) % 4 << ")";
-		cin >> word;
+		fin >> word;
 		letter_table[(15 - number_of_read) / 4][(15 - number_of_read) % 4] = word;
 	}
 
@@ -62,13 +60,13 @@ int main() {
 		for (int j = 0; j < 4; j++) {
 			string my_letter{};
 			auto lock_table = vector<vector<int>>(4, vector<int>(4, 1));
-			lock_table[0][0] = 0;
-			FindAllTableWords(dic, letter_table, lock_table, 0, 0, my_letter);
+			lock_table[i][j] = 0;
+			FindAllTableWords(dic, letter_table, lock_table, i, j, my_letter);
 		}
 	}
 
 	cout << "finished";
-	cin >> number_of_read;
+
 }
 
 void FindAllTableWords(const unordered_set<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter) {
@@ -88,7 +86,7 @@ void FindAllTableWords(const unordered_set<string> & dic, const vector<vector<ch
 			lock_table[x+i][y+j] = 1;
 		}
 	}
-	
+
 	return;
 }
 
