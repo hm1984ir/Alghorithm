@@ -28,11 +28,11 @@ template<typename T>
 class Trie{
 public:
     Trie();
-    void insert(const string key, const T value);
-    void remove(const string key);
+    void insert(const string key, const T value) const;
+    void remove(const string key) const;
     bool isWord(const string key) const;
     //T operator[](const Trie<T>& trie,const string key);
-    T find(const string key);
+    T find(const string key) const;
 private:
     TrieNode<T>& recursive_find(TrieNode<T>& node,string key, int i);
     TrieNode<T>& root;
@@ -78,7 +78,7 @@ bool Trie<T>::isWord(const string key)const{
 }
 
 template<typename T>
-T Trie<T>::find(string key){
+T Trie<T>::find(const string key) const{
     TrieNode<T>& node = recursive_find(root,key,0);
 
     if(node != nullptr){
@@ -89,7 +89,7 @@ T Trie<T>::find(string key){
 }
 
 template<typename T>
-void Trie<T>::insert(const string key, const T value){
+void Trie<T>::insert(const string key, const T value)const{
     auto node = recursive_find(root,key,0);
 
     auto temp = node.child;

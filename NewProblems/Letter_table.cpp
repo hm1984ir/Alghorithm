@@ -78,8 +78,8 @@ void FindAllTableWords(const Trie<string> & dic, const vector<vector<char>> & le
 
 	auto got = dic.find(letter);
 
-	if (got.value == letter)
-		cout << *got << " is in dic" << "\n";
+	if (got == letter)
+		cout << got << " is in dic" << "\n";
 
 	for (int i = -1; i < 2; i++) {
 		for (int j = -1; j < 2; j++) {
