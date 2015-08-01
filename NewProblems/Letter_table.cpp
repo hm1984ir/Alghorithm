@@ -5,15 +5,16 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include "trie.h"
 
 using namespace std;
 
-void FindAllTableWords(const unordered_set<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table, int x, int y, string letter);
+void FindAllTableWords(const Trie<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table, int x, int y, string letter);
 
 int main() {
 	ifstream fin("data.in", ios::in);
 
-	unordered_set<string> dic;
+	Trie<string> dic{};
 	vector<char> words(16);
 	vector<vector<char>> letter_table(4, vector<char>(4, '\0'));
 
@@ -30,7 +31,7 @@ int main() {
 
 		cout << "input dic-item : ";
 		fin >> letter;
-		dic.insert(letter);
+		dic.insert(letter,letter);
 	}
 
 	cout << "\n Now input 16 alphabete : \n";
@@ -69,11 +70,15 @@ int main() {
 
 }
 
-void FindAllTableWords(const unordered_set<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter) {
+void FindAllTableWords(const Trie<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter) {
 	letter += letter_table[x][y];
+
+	if(!dic.isWord(letter))
+        return;
+
 	auto got = dic.find(letter);
 
-	if (got != dic.end())
+	if (got.value == letter)
 		cout << *got << " is in dic" << "\n";
 
 	for (int i = -1; i < 2; i++) {
