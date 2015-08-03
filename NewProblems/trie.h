@@ -39,7 +39,9 @@ private:
 };
 
 template<typename T>
-Trie<T>::Trie():root{}{}
+Trie<T>::Trie(TrieNode root_node){
+    root = &root_node;
+}
 
 template<typename T>
 TrieNode<T>& Trie<T>::recursive_find(TrieNode<T>& node, string key , int i){
