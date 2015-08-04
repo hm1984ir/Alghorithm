@@ -70,7 +70,7 @@ TrieNode<T>& Trie<T>::recursive_find(const TrieNode<T>& node,const string key , 
 
 template<typename T>
 bool Trie<T>::isWord(const string key)const{
-    TrieNode<T>& node = recursive_find(root,key,0);
+    TrieNode<T>& node = recursive_find(*root, key, 0);
 
     if(node != root){
         return true;
@@ -81,7 +81,7 @@ bool Trie<T>::isWord(const string key)const{
 
 template<typename T>
 T Trie<T>::find(const string key) const{
-    TrieNode<T>& node = recursive_find(root,key,0);
+    TrieNode<T>& node = recursive_find(*root, key, 0);
 
     if(node != nullptr){
         return node.value;
@@ -92,7 +92,7 @@ T Trie<T>::find(const string key) const{
 
 template<typename T>
 void Trie<T>::insert(const string key, const T value)const{
-    auto node = recursive_find(move(root),key,0);
+    auto node = recursive_find(*root, key, 0);
 
     auto temp = node.child;
 

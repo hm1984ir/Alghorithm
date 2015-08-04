@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include "trie.h"
+#include <utility>
 
 using namespace std;
 
@@ -69,6 +70,13 @@ int main() {
 	cout << "finished";
 
 }
+
+//void fn(const int& i, const string str){};
+
+//void cc(const string strr){
+//    unique_ptr<int> ii;
+//    fn(*ii, strr);
+//}
 
 void FindAllTableWords(const Trie<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter) {
 	letter += letter_table[x][y];
