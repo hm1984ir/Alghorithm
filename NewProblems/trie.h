@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include<memory>
 
 using namespace std;
 
@@ -14,11 +15,10 @@ class TrieNode{
         child= {};
         brother = {};
     }
-    TrieNode& parent;
-    TrieNode& child;
-    TrieNode& brother;
+    unique_ptr<TrieNode<T>> parent;
+    unique_ptr<TrieNode<T>> child;
+    unique_ptr<TrieNode<T>> brother;
     int level;
-
 
     string key;
     T value;
@@ -34,17 +34,17 @@ public:
     //T operator[](const Trie<T>& trie,const string key);
     T find(const string key) const;
 private:
-    TrieNode<T>& recursive_find(TrieNode<T>& node,string key, int i);
-    TrieNode<T>& root;
+    TrieNode<T>& recursive_find(const TrieNode<T>& node,const string key, int i);
+    unique_ptr<TrieNode<T>> root{new TrieNode<T>};
 };
 
 template<typename T>
-Trie<T>::Trie(TrieNode root_node){
-    root = &root_node;
+Trie<T>::Trie(){
+
 }
 
 template<typename T>
-TrieNode<T>& Trie<T>::recursive_find(TrieNode<T>& node, string key , int i){
+TrieNode<T>& Trie<T>::recursive_find(const TrieNode<T>& node,const string key , int i){
     string c = key.substr(0,i);
 
     if(node.key == c){
@@ -92,7 +92,7 @@ T Trie<T>::find(const string key) const{
 
 template<typename T>
 void Trie<T>::insert(const string key, const T value)const{
-    auto node = recursive_find(root,key,0);
+    auto node = recursive_find(move(root),key,0);
 
     auto temp = node.child;
 
