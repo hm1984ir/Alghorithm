@@ -34,7 +34,7 @@ public:
     //T operator[](const Trie<T>& trie,const string key);
     T find(const string key) const;
 private:
-    TrieNode<T>& recursive_find(const TrieNode<T>& node,const string key, int i);
+    TrieNode<T>& recursive_find(const TrieNode<T>& node,const string key, int i) const;
     unique_ptr<TrieNode<T>> root{new TrieNode<T>};
 };
 
@@ -44,7 +44,7 @@ Trie<T>::Trie(){
 }
 
 template<typename T>
-TrieNode<T>& Trie<T>::recursive_find(const TrieNode<T>& node,const string key , int i){
+TrieNode<T>& Trie<T>::recursive_find(const TrieNode<T>& node,const string key , int i) const{
     string c = key.substr(0,i);
 
     if(node.key == c){
@@ -92,7 +92,8 @@ T Trie<T>::find(const string key) const{
 
 template<typename T>
 void Trie<T>::insert(const string key, const T value)const{
-    auto node = recursive_find(*root, key, 0);
+    unique_ptr<TrieNode<T>> r{new TrieNode<T>};
+    auto node = recursive_find(*r, key, 0);
 
     auto temp = node.child;
 
