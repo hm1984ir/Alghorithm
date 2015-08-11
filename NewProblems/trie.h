@@ -28,8 +28,8 @@ template<typename T>
 class Trie{
 public:
     Trie();
-    void insert(const string key, const T value) const;
-    void remove(const string key) const;
+    void insert(const string key, const T value);
+    void remove(const string key);
     bool isWord(const string key) const;
     //T operator[](const Trie<T>& trie,const string key);
     T find(const string key) const;
@@ -91,7 +91,7 @@ T Trie<T>::find(const string key) const{
 }
 
 template<typename T>
-void Trie<T>::insert(const string key, const T value)const{
+void Trie<T>::insert(const string key, const T value){
     unique_ptr<TrieNode<T>> r{new TrieNode<T>};
     auto node = recursive_find(*r, key, 0);
 
