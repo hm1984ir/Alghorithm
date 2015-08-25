@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void FindAllTableWords(const Trie<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table, int x, int y, string letter);
+void FindAllTableWords(Trie<string> & dic, vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter);
 
 int main() {
 	ifstream fin("data.in", ios::in);
@@ -55,9 +55,6 @@ int main() {
 		cout << "\n";
 	}
 
-
-
-
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			string my_letter{};
@@ -71,18 +68,11 @@ int main() {
 
 }
 
-//void fn(const int& i, const string str){};
-
-//void cc(const string strr){
-//    unique_ptr<int> ii;
-//    fn(*ii, strr);
-//}
-
-void FindAllTableWords(const Trie<string> & dic, const vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter) {
+void FindAllTableWords(Trie<string> & dic, vector<vector<char>> & letter_table, vector<vector<int>> & lock_table,int x,  int y, string letter) {
 	letter += letter_table[x][y];
 
-	if(!dic.isWord(letter))
-        return;
+	//if(!dic.isWord(letter))
+    //    return;
 
 	auto got = dic.find(letter);
 

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <list>
-#include<memory>
 
 using namespace std;
 
@@ -15,62 +14,75 @@ class TrieNode{
         child= {};
         brother = {};
     }
-    unique_ptr<TrieNode<T>> parent;
-    unique_ptr<TrieNode<T>> child;
-    unique_ptr<TrieNode<T>> brother;
-    int level;
+    TrieNode<T>* parent;
+    TrieNode<T>* child;
+    TrieNode<T>* brother;
+
+    int level = -1;
 
     string key;
     T value;
+
+    ~TrieNode(){
+        delete parent;
+        delete child;
+        delete brother;
+    }
 };
 
 template<typename T>
 class Trie{
 public:
     Trie();
-    void insert(const string key, const T value);
-    void remove(const string key);
-    bool isWord(const string key) const;
+    ~Trie();
+    void insert(string key, T value);
+    void remove(string key);
+    bool isWord(string key);
     //T operator[](const Trie<T>& trie,const string key);
-    T find(const string key) const;
+    T find(string key) ;
 private:
-    TrieNode<T>& recursive_find(const TrieNode<T>& node,const string key, int i) const;
-    unique_ptr<TrieNode<T>> root{new TrieNode<T>};
+    TrieNode<T>* recursive_find( TrieNode<T>* node, string key, int i) ;
+    TrieNode<T>* root;
 };
 
 template<typename T>
 Trie<T>::Trie(){
-
+	root = new TrieNode<T>;
 }
 
 template<typename T>
-TrieNode<T>& Trie<T>::recursive_find(const TrieNode<T>& node,const string key , int i) const{
-    string c = key.substr(0,i);
+Trie<T>::~Trie(){
+    delete root;
+}
 
-    if(node.key == c){
-        if(i == key.size()){ return node;}
+template<typename T>
+TrieNode<T>* Trie<T>::recursive_find( TrieNode<T>* node, string key , int i) {
+    string c = key.substr(i,1);
 
-        if(node.child != nullptr){
-            auto temp = recursive_find(node.child, key, i+1);
-            if(temp != nullptr){
+    if(node->key == c){
+        if(i == key.size()-1){ return node;}
+
+        if(node->child != nullptr){
+            auto temp = recursive_find(node->child, key, i+1);
+
+            if(temp != node->child){
                 return temp;
             }
         }
 
-        return node;
-    } else if(node.brother != nullptr){
-        auto temp = recursive_find(node.brother, key, i);
-        if(temp != nullptr){
+    } else if(node->brother != nullptr){
+        auto temp = recursive_find(node->brother, key, i);
+        if(temp != node->brother){
             return temp;
         }
     }
 
-    return nullptr;
+    return node;
 }
 
 template<typename T>
-bool Trie<T>::isWord(const string key)const{
-    TrieNode<T>& node = recursive_find(*root, key, 0);
+bool Trie<T>::isWord(string key){
+    TrieNode<T>* node = recursive_find(root->child, key, 0);
 
     if(node != root){
         return true;
@@ -80,39 +92,44 @@ bool Trie<T>::isWord(const string key)const{
 }
 
 template<typename T>
-T Trie<T>::find(const string key) const{
-    TrieNode<T>& node = recursive_find(*root, key, 0);
+T Trie<T>::find(string key) {
+    if(root->child == nullptr) return T();
 
-    if(node != nullptr){
-        return node.value;
+    TrieNode<T>* node = recursive_find(root->child, key, 0);
+
+    if(node->level == key.size()-1){
+        return node->value;
     } else {
         return T();
     }
 }
 
 template<typename T>
-void Trie<T>::insert(const string key, const T value){
-    unique_ptr<TrieNode<T>> r{new TrieNode<T>};
-    auto node = recursive_find(*r, key, 0);
+void Trie<T>::insert(string key, T value){
+    auto node = root;
 
-    auto temp = node.child;
+    if(root->child != nullptr){
+        auto node = recursive_find(root->child, key, 0);
+    }
 
-    TrieNode<T> new_node;
-    new_node.level = node.level+1;
-    new_node.key = key[node.level+1];
-    node.child = new_node;
-    new_node.brother = temp;
+    auto temp = node->child;
 
-    for(int i = node.level+2;i < key.size();i++){
-        TrieNode<T> temp_node;
-        temp_node.level = i;
-        temp_node.key = key[i];
+    TrieNode<T>* new_node = new TrieNode<T>;
+    new_node->level = node->level+1;
+    new_node->key = key[node->level+1];
+    node->child = new_node;
+    new_node->brother = temp;
 
-        new_node.child = temp_node;
+    for(int i = node->level+2;i < key.size();i++){
+        TrieNode<T>* temp_node = new TrieNode<T>;
+        temp_node->level = i;
+        temp_node->key = key[i];
+
+        new_node->child = temp_node;
         new_node = temp_node;
     }
 
-    new_node.value = value;
+    new_node->value = value;
 }
 
 
